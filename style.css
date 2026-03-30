@@ -1,0 +1,221 @@
+.page {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* 只有帶有 .active class 的分頁才顯示 */
+.page.active {
+    display: block;
+}
+
+#main-header {
+    width: 100%;
+    min-height: 20vh;      /* 保底高度，避免太矮 */
+    height: 25vh;          /* 常見 hero 高度 */
+    max-height: 900px;     /* 避免超高螢幕太大 */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-image: url('./pictures/header.png'); /* 16:9 圖片 */
+    background-size: cover;      /* 關鍵：充滿且不變形 */
+    background-position: center; /* 置中裁切 */
+    background-repeat: no-repeat;
+}
+
+.header {
+  top: 0;
+  z-index: 9999;
+  width: 100%;            /* 寬度撐滿 */
+  display: flex;          /* 啟用 Flexbox */
+  justify-content: space-between; /* 關鍵：左右對齊，中間留空 */
+  align-items: center;    /* 垂直置中 */
+  padding: 15px 40px;     /* 左右留一點內距，才不會死貼著螢幕邊緣 */
+  box-sizing: border-box; /* 確保 padding 不會撐開 100% 寬度 */
+  position: sticky;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* 左側群組內的連結間距 */
+.nav-left .nav-link {
+  margin-right: 25px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 右側按鈕樣式 */
+.btn-cta {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.btn-cta:hover {
+    background-color: #e8f2ff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    /* 設定背景：固定不動，並透過 linear-gradient 增加一層半透明遮罩，讓內容更清楚 */
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+                url('./pictures/bgpic.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* 2. 標題設計 */
+#title {
+    margin: 40px 0 20px 0;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+#title h1 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 2.5rem;
+}
+
+/* 3. 地圖容器：增加毛玻璃效果與響應式寬度 */
+#map-container {
+    width: 95vw !important;
+    height: 75vh;
+    background: rgba(255, 255, 255, 0.7); /* 毛玻璃背景色 */
+    backdrop-filter: blur(10px); /* 現代感毛玻璃模糊 */
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    overflow: hidden; /* 確保 Leaflet 不會超出圓角 */
+}
+
+#map-navigator {
+    width: 95vw !important;
+    height: 75vh;
+    background: rgba(255, 255, 255, 0.7); /* 毛玻璃背景色 */
+    backdrop-filter: blur(10px); /* 現代感毛玻璃模糊 */
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    overflow: hidden; /* 確保 Leaflet 不會超出圓角 */
+}
+
+/* 4. 控制區與按鈕 */
+.controls {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    
+    /* 1. 確保容器寬度與地圖一致 */
+    width: 95%; 
+    
+    /* 2. 使用 Flexbox 讓內部的按鈕置中 */
+    display: flex;
+    justify-content: center; /* 水平置中 */
+    align-items: center;     /* 垂直置中 */
+    
+    /* 3. 按鈕之間的間距 */
+    gap: 20px; 
+    
+    /* 防止被地圖遮擋 */
+    position: relative;
+    z-index: 1000;
+}
+
+.button {
+    /* 移除原本可能干擾的 translateY，改用 hover 控制 */
+    padding: 12px 24px;
+    min-width: 180px; /* 給按鈕一個最小寬度，看起來比較大氣 */
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.button:hover {
+    background: #1d4ed8;
+    transform: translateY(-3px); /* 懸停時輕微上浮 */
+}
+
+.button:active {
+    transform: translateY(0);
+}
+
+#route_toggle-btn.on-style {
+    background: #22c55e; /* green for ON */
+}
+
+#route_toggle-btn.on-style:hover {
+    background: #16a34a;
+}
+
+#route_toggle-btn.off-style {
+    background: #ef4444; /* red for OFF */
+    color: white;   
+}
+
+#route_toggle-btn.off-style:hover {
+    background: #dc2626;
+}
+
+#routing-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 5. 狀態文字 */
+#status-text {
+    margin-bottom: 30px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.glass-wrapper {
+    width: 100%;             /* 佔滿 body 寬度 */
+    display: flex;           /* 開啟 Flex 佈局 */
+    justify-content: center;  /* 讓子元素（about-us）在水平方向置中 */
+    margin: 50px 0;          /* 與上方地圖保持距離 */
+    box-sizing: border-box;
+}
+
+#about-us {
+    /* 關鍵：不再使用 inline-block，改用 block 並搭配 max-width */
+    display: block; 
+    width: 90%;              /* 在小螢幕時佔 90% */
+    max-width: 800px;        /* 在大螢幕時最多 800px，避免文字太長難以閱讀 */
+    
+    /* 毛玻璃效果 */
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    
+    /* 文字排版 */
+    text-align: left;        /* 容器置中，但內部文字維持左對齊比較專業 */
+    line-height: 1.6;
+    color: #1e293b;
+}

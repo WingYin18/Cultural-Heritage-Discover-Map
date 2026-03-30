@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cultural Heritage Advanture Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />  <!-- for displaying route -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header id="main-header"></header>
+
+    <header class="header">
+        <div class="nav-left">
+            <a href="#main-header" class="nav-link">Main Page</a>
+            <a href="" class="nav-link">Time Machine</a>
+            <a href="#about-us" class="nav-link">About US</a>
+        </div>
+
+        <div class="nav-right">
+            <a href="#title" class="btn-cta">Start Now</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="scrolling-bg" id="parallax">    
+        <h1 id="title">📍 Cultural Heritage Advanture Map</h1>
+        <div id="map-container"></div>
+
+        <div class="controls">
+            <button id="random-btn" class="button">Random Discover</button>
+            <button id="locate-btn" class="button">Current Location</button>
+            <button id="route_toggle-btn" class="button on-style" background-color: #22c55e;> <!-- style="display: none;-->
+                Show Route: ON
+            </button>
+            <p id="status-text">Please wait for API response...</p>
+        </div>
+
+        <div id="routing-container">
+                <div id="directions"></div>
+        </div>
+
+
+        <div class="glass-wrapper">
+        <div id="about-us">
+            <h1> 📍 About Us</h1>
+            <p>Final-year Social Data Science student at HKU with strong skills in programming, data analysis, and full-stack development. Experienced in business analysis and project management, with a strong interest in building data-driven applications for social and cultural impact. Creator of a Hong Kong heritage tourism web platform that integrates mapping, navigation, and visual storytelling.</p>
+            <p>What I am working on:</p>
+            <p>    • Data-driven web applications with real-world social impact</p>
+            <p>    • Location-based services and interactive data visualization</p>
+            <p>    • Applying data science and AI to cultural heritage and public engagement</p>
+        </div>
+        </div>
+    </main>
+
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script> <!-- for displaying route -->
+        <script src="script.js"></script>
+    </div>
+</body>
+</html>
