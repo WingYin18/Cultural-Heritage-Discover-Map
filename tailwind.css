@@ -1,0 +1,332 @@
+/* ==================== CULTURAL HERITAGE MAP - YOUTHFUL BLUE + DYNAMIC ISLAND ==================== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===================== GLOBAL + BACKGROUND ===================== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(rgba(240, 248, 255, 0.95), rgba(240, 248, 255, 0.95)),
+                url('./pictures/bgpic.png') no-repeat center center fixed;
+    background-size: cover;
+    color: #1e293b;
+}
+
+/* ===================== 新增：解決寬度溢出核心設定 ===================== */
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* ===================== HEADER - 靈動島風格 ===================== */
+.header {
+    top: 0;
+    z-index: 9999;
+    width: 100%;
+    padding: 16px 40px;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255,255,255,0.7);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* 靈動島主體（使用原本的 .nav-left） */
+.nav-left {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 9999px;
+    padding: 8px 24px;
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.25);
+    border: 1px solid rgba(255,255,255,0.6);
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    z-index: 10;
+    max-width: 90%;   /* 防止在小螢幕溢出 */
+}
+
+.nav-left .nav-link {
+    color: #1e40af;
+    font-weight: 600;
+    font-size: 1.05rem;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.nav-left .nav-link:hover {
+    color: #3b82f6;
+    transform: scale(1.05);
+}
+
+/* GitHub 保持在右側 */
+.nav-right {
+    margin-left: auto;
+}
+
+/* ===================== TITLE ===================== */
+#title {
+    margin: 50px 0 25px 0;
+    text-align: center;
+    font-size: 3.2rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #1e40af, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+/* ===================== SEARCH BAR ===================== */
+#search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 30px auto;
+    padding: 0 20px;
+    gap: 18px;
+}
+
+.search-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    max-width: 1100px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(24px);
+    border-radius: 9999px;
+    padding: 8px 12px;
+    box-shadow: 0 15px 35px rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(255,255,255,0.6);
+    gap: 12px;
+}
+
+#districtInput {
+    flex: 1;
+    padding: 18px 28px;
+    font-size: 1.1rem;
+    border: none;
+    background: transparent;
+    outline: none;
+    color: #1e293b;
+    min-width: 0;
+}
+
+#districtInput::placeholder {
+    color: #64748b;
+    opacity: 0.85;
+}
+
+#search-btn.button {
+    padding: 18px 48px;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #3b82f6, #1e40af);
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    border: none;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#search-btn.button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.5);
+}
+
+/* ===================== MAP ===================== */
+#map-container {
+    width: 100% !important;
+    max-width: 1200px !important;
+    height: 72vh;
+    margin: 0 auto;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+}
+
+/* ===================== CONTROLS ===================== */
+.controls {
+    margin: 35px auto;
+    width: 100%;
+    max-width: 1100px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.button {
+    padding: 16px 32px;
+    min-width: 170px;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 35px rgba(0,0,0,0.15);
+}
+
+#route_toggle-btn.on-style  { background: #3b82f6; }
+#route_toggle-btn.off-style { background: #ef4444; }
+
+/* ===================== OTHER ELEMENTS ===================== */
+#status-text, #search-display, .glass-wrapper, .timeline-container {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(16px);
+}
+
+#search-display {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 其他頁面基本保留 */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ==================== 解決正方格子 + 統一青春藍色風格 ==================== */
+
+/* 1. AI 推薦卡片 - 改成圓潤毛玻璃風格（覆蓋 JS 內聯樣式） */
+.recommendation-card {
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+    border-radius: 24px !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(20px) !important;
+    box-shadow: 0 15px 35px rgba(59, 130, 246, 0.15) !important;
+    padding: 24px !important;
+    margin-top: 12px;
+}
+
+/* 2. 狀態文字（GPS 成功訊息） - 改成膠囊形 */
+#status-text {
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(20px) !important;
+    border-radius: 9999px !important;
+    border: 1px solid rgba(59, 130, 246, 0.2) !important;
+    padding: 14px 28px !important;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1) !important;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 讓綠色勾勾更明顯 */
+#status-text::before {
+    content: "✅";
+    font-size: 1.3rem;
+}
+
+/* 3. 讓推薦卡片內的按鈕也更圓潤 */
+.recommendation-card button {
+    border-radius: 9999px !important;
+    padding: 10px 24px !important;
+    background: linear-gradient(90deg, #3b82f6, #1e40af) !important;
+}
+
+/* ==================== ABOUT US 修正版 - 青春藍色現代風格 ==================== */
+
+#about-page.active {                    
+    background: linear-gradient(180deg, #f0f8ff, #e0f0ff);
+    min-height: 100vh;
+    padding: 80px 20px 120px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 玻璃卡片主體 */
+.glass-wrapper {
+    max-width: 920px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(24px);
+    border-radius: 32px;
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.18);
+    padding: 60px 40px;   /* 僅微調左右 padding 避免溢出 */
+    margin: 0 20px;
+}
+
+/* 標題 */
+#about-us h1 {
+    font-size: 3.1rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #1e40af, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* 內文 */
+#about-us p {
+    font-size: 1.18rem;
+    line-height: 1.8;
+    color: #1e293b;
+    margin-bottom: 28px;
+}
+
+/* 工作項目 */
+#about-us p:last-of-type {
+    margin-bottom: 16px;
+    font-weight: 700;
+    color: #1e40af;
+}
+
+#about-us ul {
+    list-style: none;
+    padding: 0;
+}
+
+#about-us li {
+    padding: 16px 0 16px 42px;
+    position: relative;
+    font-size: 1.12rem;
+    color: #334155;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.12);
+}
+
+#about-us li:last-child {
+    border-bottom: none;
+}
+
+#about-us li::before {
+    content: "•";
+    position: absolute;
+    left: 8px;
+    color: #3b82f6;
+    font-size: 2rem;
+    line-height: 1;
+    top: 14px;
+}

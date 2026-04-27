@@ -1,12 +1,42 @@
+/* 修改 .page 的設定 */
 .page {
     display: none;
     width: 100%;
-    min-height: 100vh;
+    min-height: calc(100vh - 60px); /* 扣除導航欄高度 */ 
+    box-sizing: border-box;
+}
+
+/* 讓 time-machine-page 的內容置中 */
+#time-machine-page {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 確保 timeline-container 在白底上清晰可見 */
+.timeline-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto; /* 水平置中 */
+    text-align: center;
+}
+
+#year-slider {
+    width: 100%;
+    margin: 20px 0;
 }
 
 /* 只有帶有 .active class 的分頁才顯示 */
 .page.active {
     display: block;
+}
+
+main {
+    margin-top: 60px; 
 }
 
 #main-header {
@@ -49,9 +79,10 @@
 }
 
 /* 右側按鈕樣式 */
-.btn-cta {
+.btn-github {
   padding: 10px 20px;
-  background-color: #007BFF;
+  background-image: url('./pictures/github.png');
+  background-repeat: no-repeat;
   color: white;
   text-decoration: none;
   border-radius: 6px;
@@ -88,6 +119,77 @@ body {
     margin: 0;
     color: #1e293b;
     font-size: 2.5rem;
+}
+
+/* ==================== SEARCH BAR (乾淨版 - 幾乎不用 !important) ==================== */
+#search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 95vw;
+    max-width: 1100px;
+    margin: 20px auto 16px auto;
+    gap: 16px;
+}
+
+.search-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    border-radius: 9999px;
+    padding: 8px 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    flex-wrap: nowrap;           /* 強制同一行 */
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+#districtInput {
+    flex: 1;
+    padding: 16px 24px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    outline: none;
+    min-width: 0;
+    color: #1e293b;
+}
+
+#districtInput::placeholder {
+    color: #64748b;
+    opacity: 0.9;
+}
+
+/* 因為 button 有 .button class，我們用 ID 覆蓋（ID 權重高於 class） */
+#search-btn {
+    padding: 16px 44px;
+    border-radius: 9999px;
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    white-space: nowrap;
+    border: none;
+    min-width: auto;           /* 取消 .button 的 min-width:180px */
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    transition: all 0.2s;
+}
+
+#search-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+/* 搜尋結果（第二行） */
+#search-display {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
 /* 3. 地圖容器：增加毛玻璃效果與響應式寬度 */
@@ -198,7 +300,7 @@ body {
     box-sizing: border-box;
 }
 
-#about-us {
+#about-us{
     /* 關鍵：不再使用 inline-block，改用 block 並搭配 max-width */
     display: block; 
     width: 90%;              /* 在小螢幕時佔 90% */
@@ -218,4 +320,29 @@ body {
     text-align: left;        /* 容器置中，但內部文字維持左對齊比較專業 */
     line-height: 1.6;
     color: #1e293b;
+}
+
+/* style.css */
+.timeline-container {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 15px 25px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 300px;
+}
+
+#year-slider {
+    width: 100%;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#year-display {
+    font-weight: bold;
+    color: #2563eb;
+    font-size: 1.2rem;
 }

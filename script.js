@@ -15,47 +15,89 @@ let myLocationMarker = null; // maker object
 let isRouteEnabled = true;
 
 
-const apiUrl = "https://portal.csdi.gov.hk/server/services/common/devb_wb_rcd_1639040299687_46105/MapServer/WFSServer?service=wfs&request=GetFeature&typenames=DM_20260130_150858&outputFormat=geojson&count=10000"
-
+const apiUrl = "http://127.0.0.1:8000/get_processed_data";        //backend json
 async function fetchHeritageData() {
     try {
-        const response = await fetch(apiUrl);
+        const response = await fetch(apiUrl, {
+            method: "GET"
+        });
         
         if (!response.ok) {
             statusText.innerText = "API response failed... Status: ${response.status}`"
         }
 
         const data = await response.json();
-        console.log("Recieve Data Successfully : ", data.features[0].properties.NAME_TC);
+
+        console.log("Using python backend")
 
         return data;
     } catch (error) {
         console.error("API response failed... Status: ", error);
-        return null;
+        return [];
     }
 }
 
-function processHeritageData(data) {
-    if (!data || !data.features) return [];
 
-    return data.features.map(feature => { //return for function
-        const firstCoord = feature.geometry.coordinates[0][0][0];
-        return {nameEN: feature.properties.NAME, //return for map
-        nameTC: feature.properties.NAME_TC,
-        lng: firstCoord[0],
-        lat: firstCoord[1],
-        addressEN: feature.properties.ADDRESS,
-        addressTC: feature.properties.ADDRESS_TC,
-        URL_IMAGE: feature.properties.URL_IMAGE
+
+const searchBtn = document.getElementById('search-btn');      //ai推薦
+searchBtn.addEventListener('click',findHeritage);
+
+async function findHeritage() {
+    const userInput = document.getElementById('districtInput').value;
+    const result = document.querySelector("#search-display");
+    
+    if (!userInput) {
+        alert("請輸入地區或關鍵字");
+        return;
+    }
+
+    result.innerHTML = `<div class="loading">AI 正在從數據庫挑選最適合的地點 AI is selecting the best location from the database...</div>`;
+
+    try {
+        const response = await fetch("http://localhost:8000/recommend", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "query": userInput })
+        });
+
+        const data = await response.json();
+        
+        // --- 關鍵修改處 ---
+        try {
+            // 嘗試解析 AI 回傳的 JSON 字串
+            const recommendation = JSON.parse(data.reply);
+            
+            // 使用 HTML 模板漂亮地顯示結果
+            result.innerHTML = `
+                <div class="recommendation-card" style="border: 2px solid #007bff; padding: 15px; border-radius: 10px; background: #f8f9fa;">
+                    <h3 style="color: #007bff; margin-top: 0;">🌟 Recommendation推薦：${recommendation.name}</h3>
+                    <p><strong>🏛️ District地區：</strong> ${recommendation.district}</p>
+                    <p><strong>📍 Address地址：</strong> ${recommendation.address}</p>
+                    <p><strong>💡 Reasons推薦理由：</strong> ${recommendation.reason}</p>
+                    <button onclick="zoomToHeritage('${recommendation.name}')" style="background: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                        在地圖上查看
+                    </button>
+                </div>
+            `;
+        } catch (parseError) {
+            // 如果 AI 沒有按 JSON 格式回傳（例如回傳了普通句子），就直接顯示原始文字
+            console.warn("AI response was not JSON:", data.reply);
+            result.innerHTML = `<p>${data.reply}</p>`;
         }
-    })
+        // ----------------
+
+    } catch (error) {
+        console.error("Error:", error);
+        result.innerHTML = `<p style="color: red;">連線失敗，請檢查後端是否正常啟動。</p>`;
+    }
 }
+   
 
 async function initHeritageMap() {
     const data = await fetchHeritageData();
 
     if (data) {
-        sites = processHeritageData(data);
+        sites = data;
         console.log("處理完成的古蹟總數：", sites.length);
         markerDisplay(sites);
     }
@@ -72,11 +114,11 @@ function locationCheck() {
     navigator.geolocation.getCurrentPosition(successGPS,errorGPS);
 }
 
-function successGPS(position) {
+function successGPS(position) {                              //用戶定位成功
     const userLat = position.coords.latitude;
     const userLng = position.coords.longitude;
     userLatLng = L.latLng(userLat,userLng)
-    statusText.innerText = `✅ GPS Positioning Successfully! (Lat:${userLat.toFixed(2)}, Long:${userLng.toFixed(2)})`;
+    statusText.innerText = ` GPS Positioning Successfully! (Lat:${userLat.toFixed(2)}, Long:${userLng.toFixed(2)})`;
 
     if (myLocationMarker) {
         map.removeLayer(myLocationMarker);
@@ -90,7 +132,7 @@ function successGPS(position) {
     }).addTo(map)
 }
 
-function errorGPS(position) {
+function errorGPS(position) {                                  //用戶定位失敗
     statusText.innerText = "❌ GPS Positioning Failed, Please Check the GPS Permission...";
 }
 
@@ -190,7 +232,7 @@ random_btn.addEventListener('click', function() {
 
 
 
-const locate_btn = document.getElementById("locate-btn");
+const locate_btn = document.getElementById("locate-btn");               //定位按鈕
 
 locate_btn.addEventListener('click',function() {
     if (myLocationMarker) {
@@ -209,7 +251,7 @@ locate_btn.addEventListener('click',function() {
 
 
 
-let routeBtn = document.getElementById('route_toggle-btn');
+let routeBtn = document.getElementById('route_toggle-btn');       //路線按鈕
 
 routeBtn.addEventListener('click',function() {
     isRouteEnabled = !isRouteEnabled;
@@ -248,8 +290,30 @@ window.addEventListener('scroll', function() {
     target.style.backgroundPosition = `center ${rate}px`;
 });
 
+
+function showPage(pageId) {
+    // 1. 隱藏所有分頁
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => page.classList.remove('active'));
+
+    // 2. 顯示點擊的分頁
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.classList.add('active');
+    }
+
+    // 3. 重要：如果回到地圖頁，Leaflet 需要重新計算大小
+    if (pageId === 'map-page' && window.map) {
+        setTimeout(() => {
+            window.map.invalidateSize();
+        }, 100);
+    }
+}
+
+
 window.onload = function () {
     initHeritageMap();
     locationCheck();
+    routeBtn.innerText = "Show Route: ON";
 };
 

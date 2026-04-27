@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Cultural Heritage Advanture Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> 
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />  <!-- for displaying route -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="tailwind.css">
 </head>
 
 <body>
@@ -12,26 +13,36 @@
 
     <header class="header">
         <div class="nav-left">
-            <a href="#main-header" class="nav-link">Main Page</a>
-            <a href="" class="nav-link">Time Machine</a>
-            <a href="#about-us" class="nav-link">About US</a>
+            <a href="javascript:void(0)" onclick="showPage('map-page')" class="nav-link">Advanture Map</a>
+            <a href="javascript:void(0)" onclick="showPage('time-machine-page')" class="nav-link">Time Machine</a>
+            <a href="javascript:void(0)" onclick="showPage('about-page')" class="nav-link">About US</a>
         </div>
 
         <div class="nav-right">
-            <a href="#title" class="btn-cta">Start Now</a>
+            <a href="https://github.com/WingYin18/Cultural-Heritage-Discover-Map" onclick="showPage('map-page')" class="btn-github">
+                <img src="./pictures/github.png" style="width: 30px; vertical-align: middle;">
+            </a>
         </div>
     </header>
 
     <main>
+        <section id="map-page" class="page active">               <!-- main page -->
         <div class="scrolling-bg" id="parallax">    
         <h1 id="title">📍 Cultural Heritage Advanture Map</h1>
+        <div id="search-container">
+            <div class="search-bar">
+                <input type="text" id="districtInput" placeholder="  Can't decide where to visit ? Let Artifical Intelliengce suggest you !">
+                <button id="search-btn" class="button"><b>Search</b></button>
+            </div>
+            <div id="search-display"></div> 
+        </div>
+
         <div id="map-container"></div>
 
         <div class="controls">
             <button id="random-btn" class="button">Random Discover</button>
             <button id="locate-btn" class="button">Current Location</button>
-            <button id="route_toggle-btn" class="button on-style" background-color: #22c55e;> <!-- style="display: none;-->
-                Show Route: ON
+            <button id="route_toggle-btn" class="button on-style" background-color: #22c55e;> 
             </button>
             <p id="status-text">Please wait for API response...</p>
         </div>
@@ -39,8 +50,19 @@
         <div id="routing-container">
                 <div id="directions"></div>
         </div>
+        </section>
 
+        <section id="time-machine-page" class="page">             <!-- time machine page -->
+            <div class="time-machine-container">
 
+            </div>
+            <div class="timeline-container">
+                <label for="year-slider">Year: <span id="year-display">2026</span></label>
+                <input type="range" id="year-slider" min="1840" max="2026" value="2026" step="1">
+            </div>
+        </section>
+
+        <section id="about-page" class="page">        <!-- about page -->
         <div class="glass-wrapper">
         <div id="about-us">
             <h1> 📍 About Us</h1>
@@ -51,6 +73,7 @@
             <p>    • Applying data science and AI to cultural heritage and public engagement</p>
         </div>
         </div>
+        </section>  
     </main>
 
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
